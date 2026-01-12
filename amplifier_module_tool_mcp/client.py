@@ -49,6 +49,7 @@ class MCPClient:
         command: str,
         args: list[str],
         env: dict[str, str] | None = None,
+        cwd: str | Path | None = None,
         reconnection_config: ReconnectionConfig | None = None,
         verbose_servers: bool = False,
         server_log_dir: Path | None = None,
@@ -61,6 +62,7 @@ class MCPClient:
             command: Command to execute (e.g., "npx", "python")
             args: Arguments for the command
             env: Optional environment variables
+            cwd: Optional working directory for the server process
             reconnection_config: Reconnection configuration (uses defaults if None)
             verbose_servers: Whether to show server stderr output (default: False)
             server_log_dir: Directory for server logs when suppressed (default: ~/.amplifier/logs/mcp-servers/)
@@ -69,6 +71,7 @@ class MCPClient:
         self.command = command
         self.args = args
         self.env = env or {}
+        self.cwd = cwd
         self.session: ClientSession | None = None
         self.tools: list[dict[str, Any]] = []
         self.resources: list[dict[str, Any]] = []
@@ -143,6 +146,7 @@ class MCPClient:
                 command=self.command,
                 args=self.args,
                 env=merged_env,
+                cwd=self.cwd,
             )
 
             # Open log file if needed

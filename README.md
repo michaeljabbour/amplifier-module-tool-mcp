@@ -202,6 +202,7 @@ tools:
         my-server:
           command: npx
           args: ["-y", "my-mcp-server"]
+          cwd: /path/to/working/directory  # Optional working directory
 ```
 
 **Configuration options**:
@@ -212,6 +213,15 @@ tools:
 | `server_log_dir` | `~/.amplifier/logs/mcp-servers/` | Directory for server logs when suppressed |
 | `max_content_size` | `50000` | Maximum content size in characters. Content exceeding this limit is automatically truncated with a notice to prevent context window exhaustion |
 | `servers` | (optional) | Inline server configuration (overrides .amplifier/mcp.json) |
+
+**Per-server configuration options**:
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `command` | Yes | Command to execute (e.g., `npx`, `python`, `node`) |
+| `args` | No | Arguments for the command |
+| `env` | No | Environment variables for the server process |
+| `cwd` | No | Working directory for the server process. Falls back to `AMPLIFIER_WORK_DIRECTORY` env var if not specified |
 
 **Environment variable override**:
 ```bash

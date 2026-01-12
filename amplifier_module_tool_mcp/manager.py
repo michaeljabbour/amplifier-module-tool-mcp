@@ -152,9 +152,16 @@ class MCPManager:
         # Substitute environment variables
         env = {k: MCPConfig.substitute_env_vars(v) for k, v in env.items()}
 
+        # Get working directory from config, or fall back to AMPLIFIER_WORK_DIRECTORY env var
+        cwd = server_config.get("cwd")
+        if not cwd:
+            cwd = os.environ.get("AMPLIFIER_WORK_DIRECTORY")
+        if cwd:
+            logger.debug(f"Server '{server_name}' will use working directory: {cwd}")
+
         # Create and connect client with verbose settings
         client = MCPClient(
-            server_name, command, args, env, verbose_servers=self.verbose_servers, server_log_dir=self.server_log_dir
+            server_name, command, args, env, cwd=cwd, verbose_servers=self.verbose_servers, server_log_dir=self.server_log_dir
         )
         await client.connect()
 
